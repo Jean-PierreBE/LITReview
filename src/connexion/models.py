@@ -5,7 +5,7 @@ MESSAGE_NO_EMAIL = "Veuillez saisir un mail !"
 MESSAGE_NO_PSEUDO = "Veuillez saisir un pseudo !"
 # Create your models here.
 
-class MysUserManager(BaseUserManager):
+class MyUserManager(BaseUserManager):
     def create_user(self, pseudo, email, password=None):
         if not pseudo:
             raise ValueError(MESSAGE_NO_PSEUDO)
@@ -45,7 +45,7 @@ class ConnectUser(AbstractBaseUser):
 
     USERNAME_FIELD = "pseudo"
     REQUIRED_FIELDS = ["email"]
-    objects = MysUserManager()
+    objects = MyUserManager()
 
     def has_perm(self, perm, obj=None):
         return True
