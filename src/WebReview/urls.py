@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 import review.views
+import connexion.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +26,6 @@ urlpatterns = [
             redirect_authenticated_user=True),
              name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('signup/', connexion.views.signup, name='signup'),
     path('home/', review.views.home, name='home')
 ]

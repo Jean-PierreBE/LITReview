@@ -1,0 +1,52 @@
+html {
+    font-family: Arial;
+    background-color: #41e09e;
+}
+
+/* The sidebar menu */
+/*barre de navigation */
+header {
+    background-color: #3890e8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #7e29a3;
+}
+#title {
+    margin-left:20px;
+}
+#navbar {
+    margin-right:150px;
+}
+#navbar a {
+    margin: 0px 20px;
+}
+#navbar a:hover {
+    color: #f1f1f1;
+}
+/* Style page content */
+.main {
+    margin-left: 240px; /* Same as the width of the sidebar */
+    padding: 20px;
+}
+
+.avatar {
+    width: 80%;
+    border-radius: 10%;
+    display: block;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.post img {
+    width: 80%;
+    border-radius: 5px;
+}
