@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Votre flux</h2>
-    <div class="grid-container">
-    </div>
+    <ul class="menu_button">
+        <li><a href="{% url 'crud_review' %}">Créer une critique</a></li>
+        <li><a href="{% url 'crud_ticket' %}">Créer un ticket</a></li>
+    </ul>
 {% endblock content %}

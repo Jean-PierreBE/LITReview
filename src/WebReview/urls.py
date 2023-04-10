@@ -27,5 +27,9 @@ urlpatterns = [
              name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', connexion.views.signup, name='signup'),
-    path('home/', review.views.home, name='home')
+    path('home/posts', review.views.posts, name='posts'),
+    path('home/abonnements', review.views.abonnements, name='abonnements'),
+    path('home/crud_review', review.views.crud_review, name='crud_review'),
+    path('home/crud_ticket', review.views.crud_ticket, name='crud_ticket'),
+    path('home/', review.views.home, name='home'),
 ]
