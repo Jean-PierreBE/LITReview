@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>critique</h2>
-    <div class="grid-container">
-    </div>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value={{ action }}>
+    </form>
 {% endblock content %}
