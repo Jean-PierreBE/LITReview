@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>ticket</h2>
+    <h2>{{ title }}</h2>
     <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Créer">
+        <input type="submit" value={{ action }}>
     </form>
 {% endblock content %}

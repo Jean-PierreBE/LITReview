@@ -1,40 +1,40 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
+from django.views import View
+from django.views.generic import TemplateView, CreateView
+from django.urls import reverse_lazy
 from review.forms import TicketForm
+from review.models import Ticket
 
 # Create your views here.
-@login_required
-def home(request):
+class HomeView(TemplateView):
+    template_name = 'review/home.html'
 
-    return render(request, 'review/home.html')
+class PostsView(View):
+    def get(self, request):
+        return render(request, 'review/posts.html')
 
-@login_required
-def posts(request):
+class AbonnementsView(View):
+    def get(self, request):
+        return render(request, 'review/abonnements.html')
 
-    return render(request, 'review/posts.html')
+class ReviewView(View):
+    def get(self, request):
+        return render(request, 'review/crud_review.html')
 
-@login_required
-def abonnements(request):
+class CreateTicketView(CreateView):
+    model = Ticket
+    template_name = 'review/crud_ticket.html'
+    form_class = TicketForm
+    success_url = reverse_lazy('home')
+    title = "default"
+    action = "default"
 
-    return render(request, 'review/abonnements.html')
-
-@login_required
-def crud_review(request):
-
-    return render(request, 'review/crud_review.html')
-
-@login_required
-def crud_ticket(request):
-    if request.method == "POST":
-        form = TicketForm(request.POST)
-        if form.is_valid:
-            ticket_form = form.save(commit=False)
-            ticket_form.user = request.user
-            ticket_form.save()
-        return HttpResponseRedirect()
-    else:
-        form = TicketForm()
-
-    return render(request, 'review/crud_ticket.html', {"form": form})
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["title"] = self.title
+        context["action"] = self.action
+        return context
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.user = self.request.user
+        return super().form_valid(form)

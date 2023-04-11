@@ -18,6 +18,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 import review.views
 import connexion.views
+from django.views import View
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,10 +27,11 @@ urlpatterns = [
             redirect_authenticated_user=True),
              name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('signup/', connexion.views.signup, name='signup'),
-    path('home/posts', review.views.posts, name='posts'),
-    path('home/abonnements', review.views.abonnements, name='abonnements'),
-    path('home/crud_review', review.views.crud_review, name='crud_review'),
-    path('home/crud_ticket', review.views.crud_ticket, name='crud_ticket'),
-    path('home/', review.views.home, name='home'),
+    #path('signup/', connexion.views.signup, name='signup'),
+    path('signup/', connexion.views.SignupView.as_view(), name='signup'),
+    path('home/posts', review.views.PostsView.as_view(), name='posts'),
+    path('home/abonnements', review.views.AbonnementsView.as_view(), name='abonnements'),
+    path('home/crud_review', review.views.ReviewView.as_view(), name='crud_review'),
+    path('home/create_ticket', review.views.CreateTicketView.as_view(title="Créer un ticket", action = "créer"), name='create_ticket'),
+    path('home/', review.views.HomeView.as_view(), name='home'),
 ]
