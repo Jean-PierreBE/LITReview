@@ -57,7 +57,15 @@ header {
     padding: 20px;
 }
 
-.post img {
-    width: 80%;
-    border-radius: 5px;
+form > p {
+        display : flex;
+        flex-direction: column;
+}
+
+#id_username, #id_password, #id_pseudo, #id_password1, #id_password2{
+    width: 6%;
+}
+
+#id_email {
+    width: 25%;
 }

@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic import TemplateView, CreateView
 from django.urls import reverse_lazy
 from review.forms import TicketForm
-from review.models import Ticket
+from review.models import Ticket, UserFollows
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -15,6 +15,8 @@ class PostsView(View):
 
 class AbonnementsView(View):
     def get(self, request):
+        abonnements = UserFollows.object.filter(user = request.user)
+        data = {"abonnements" : abonnements}
         return render(request, 'review/abonnements.html')
 
 class ReviewView(View):
