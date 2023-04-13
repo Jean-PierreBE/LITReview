@@ -2,6 +2,7 @@ html {
     font-family: Arial;
     background-color: #41e09e;
 }
+/* login page */
 
 /* The sidebar menu */
 /*barre de navigation */
@@ -62,10 +63,14 @@ form > p {
         flex-direction: column;
 }
 
-#id_username, #id_password, #id_pseudo, #id_password1, #id_password2{
+#id_pseudo, #id_password1, #id_password2{
     width: 6%;
 }
 
 #id_email {
+    width: 25%;
+}
+
+#id_title ,#id_description{
     width: 25%;
 }

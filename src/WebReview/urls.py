@@ -29,7 +29,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', connexion.views.SignupView.as_view(), name='signup'),
     path('home/posts', review.views.PostsView.as_view(), name='posts'),
-    path('home/abonnements', review.views.AbonnementsView.as_view(), name='abonnements'),
+    path('home/abonnements', review.views.UserFollowsView.as_view(title01="Suivre d'autres utilisateurs", action01 = "envoyer"), name='abonnements'),
     path('home/create_review', review.views.ReviewView.as_view(), name='create_review'),
     path('home/create_ticket', review.views.CreateTicketView.as_view(title="Créer un ticket", action = "créer"), name='create_ticket'),
     path('home/', review.views.HomeView.as_view(), name='home'),
