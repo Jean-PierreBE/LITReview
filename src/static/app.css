@@ -63,7 +63,7 @@ form > p {
         flex-direction: column;
 }
 
-#id_pseudo, #id_password1, #id_password2{
+#id_pseudo, #id_password1, #id_password2, #id_followed_user{
     width: 6%;
 }
 

@@ -19,16 +19,19 @@ class UserFollowsView(CreateView):
     form_class = UserFollowsForm
     success_url = reverse_lazy('home')
     title01 = "default"
+    title02 = "default"
+    title03 = "default"
     action01 = "default"
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["title01"] = self.title01
+        context["title02"] = self.title02
+        context["title03"] = self.title03
         context["action01"] = self.action01
         return context
 
     def form_valid(self, form):
         if self.request.user.is_authenticated:
-            print("self.request.user")
             form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -51,6 +54,5 @@ class CreateTicketView(CreateView):
         return context
     def form_valid(self, form):
         if self.request.user.is_authenticated:
-            print("self.request.user 1 ")
             form.instance.user = self.request.user
         return super().form_valid(form)
