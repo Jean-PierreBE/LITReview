@@ -1,4 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from django.views import View
 from django.views.generic import TemplateView, CreateView
 from django.urls import reverse_lazy
@@ -32,8 +34,15 @@ class UserFollowsView(CreateView):
 
     def form_valid(self, form):
         if self.request.user.is_authenticated:
+            if self.request.user == form.instance.followed_user:
+                raise ValidationError("Un utilisateur ne peut se suivre lui-même!")
             form.instance.user = self.request.user
-        return super().form_valid(form)
+            try:
+                result = super().form_valid(form)
+            except IntegrityError:
+                raise IntegrityError('ce couple existe déja !!')
+            else:
+                return result
 
 class ReviewView(View):
     def get(self, request):
