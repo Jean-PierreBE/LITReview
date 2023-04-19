@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>{{ title01 }}</h2>
-    {% if errors %}
-        {% for error in errors %}
-            <p> {{ error}} </p>
+    {% if messages %}
+        {% for message in messages %}
+            <p> {{ message }} </p>
         {% endfor%}
     {% endif %}
     <form method="POST">
@@ -12,5 +12,19 @@
         <input type="submit" value={{ action01 }}>
     </form>
     <h2>{{ title02 }}</h2>
+    {% if follows %}
+        {% for follow in follows %}
+             <div>
+               {{ follow.followed_user}}
+             </div>
+        {% endfor ´%}
+    {% endif %}
     <h2>{{ title03 }}</h2>
+    {% if followers %}
+        {% for follower in followers %}
+             <div>
+               {{ follower.user}}
+             </div>
+        {% endfor ´%}
+    {% endif %}
 {% endblock content %}

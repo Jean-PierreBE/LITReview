@@ -31,7 +31,7 @@ urlpatterns = [
     path('signup/', connexion.views.SignupView.as_view(), name='signup'),
     path('home/posts', login_required(review.views.PostsView.as_view()), name='posts'),
     path('home/abonnements', login_required(review.views.UserFollowsView.as_view(title01="Suivre d'autres utilisateurs", action01 = "envoyer",
-                                                                  title02="Suivre d'autres utilisateurs",
+                                                                  title02="Abonnements",
                                                                   title03="Abonnés")),
          name='abonnements'),
     path('home/create_review', login_required(review.views.ReviewView.as_view()), name='create_review'),

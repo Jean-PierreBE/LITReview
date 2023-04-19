@@ -6,6 +6,8 @@ from django.views.generic import TemplateView, CreateView
 from django.urls import reverse_lazy
 from review.forms import TicketForm, UserFollowsForm
 from review.models import Ticket, UserFollows
+from connexion.models import ConnectUser
+from django.contrib import messages
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -24,31 +26,35 @@ class UserFollowsView(CreateView):
     title02 = "default"
     title03 = "default"
     action01 = "default"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["title01"] = self.title01
         context["title02"] = self.title02
         context["title03"] = self.title03
         context["action01"] = self.action01
+        context["follows"] = UserFollows.objects.filter(user=self.request.user)
+        context["followers"] = UserFollows.objects.filter(followed_user=self.request.user)
         return context
 
     def post(self, request, *args, **kwargs):
-        print("def post")
         form = UserFollowsForm(request.POST)
         errors = []
-        if self.request.user == form.instance.followed_user:
-           errors.append("Un utilisateur ne peut se suivre lui-même!")
-        if UserFollows.objects.filter(user = self.request.user,followed_user = form.instance.followed_user).exists():
-            errors.append("ce couple existe déja !!")
-
-        if not errors and form.is_valid():
+        if form.is_valid():
             form.instance.user = self.request.user
-            form.save()
-            return redirect('home')
-        else:
-            context = self.get_context_data(**kwargs)
-            context['errors'] = form.errors + errors
-            return render(request, self.template_name, context)
+            if self.request.user == form.instance.followed_user:
+                errors.append("Un utilisateur ne peut se suivre lui-même!")
+            if UserFollows.objects.filter(user=self.request.user, followed_user=form.instance.followed_user).exists():
+                errors.append("Le couple "+ str(self.request.user) + " et "+ str(form.instance.followed_user) + " existe déja !!")
+            if not errors:
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Le couple "+ str(self.request.user) + ","+ str(form.instance.followed_user) + " a été créé avec succès!!")
+                return redirect('abonnements')
+            else:
+                for error in errors:
+                    messages.add_message(request, messages.ERROR, error)
+                    print(messages.ERROR)
+                return redirect('abonnements')
 
 class ReviewView(View):
     def get(self, request):
