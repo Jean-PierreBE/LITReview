@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>{{ title01 }}</h2>
+    {% if errors %}
+        {% for error in errors %}
+            <p> {{ error}} </p>
+        {% endfor%}
+    {% endif %}
     <form method="POST">
         {% csrf_token %}
         {{form.as_p}}

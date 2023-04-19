@@ -19,6 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 import review.views
 import connexion.views
 from django.views import View
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,12 +29,12 @@ urlpatterns = [
              name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', connexion.views.SignupView.as_view(), name='signup'),
-    path('home/posts', review.views.PostsView.as_view(), name='posts'),
-    path('home/abonnements', review.views.UserFollowsView.as_view(title01="Suivre d'autres utilisateurs", action01 = "envoyer",
+    path('home/posts', login_required(review.views.PostsView.as_view()), name='posts'),
+    path('home/abonnements', login_required(review.views.UserFollowsView.as_view(title01="Suivre d'autres utilisateurs", action01 = "envoyer",
                                                                   title02="Suivre d'autres utilisateurs",
-                                                                  title03="Abonnés"),
+                                                                  title03="Abonnés")),
          name='abonnements'),
-    path('home/create_review', review.views.ReviewView.as_view(), name='create_review'),
-    path('home/create_ticket', review.views.CreateTicketView.as_view(title="Créer un ticket", action = "créer"), name='create_ticket'),
-    path('home/', review.views.HomeView.as_view(), name='home'),
+    path('home/create_review', login_required(review.views.ReviewView.as_view()), name='create_review'),
+    path('home/create_ticket', login_required(review.views.CreateTicketView.as_view(title="Créer un ticket", action = "créer")), name='create_ticket'),
+    path('home/', login_required(review.views.HomeView.as_view()), name='home'),
 ]
