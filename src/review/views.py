@@ -14,9 +14,15 @@ class HomeView(TemplateView):
     template_name = 'review/home.html'
 
 class PostsView(View):
-    def get(self, request):
-        return render(request, 'review/posts.html')
+    template_name = 'review/posts.html'
+    title01 = "default"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["title01"] = self.title01
+        return context
 
+    def get(self, request):
+        return render(request, self.template_name)
 class UserFollowsView(CreateView):
     model = UserFollows
     template_name = 'review/abonnements.html'

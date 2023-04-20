@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>posts</h2>
-    <div class="grid-container">
-    </div>
+    <h2>{{ title01 }}</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <p> {{ message }} </p>
+        {% endfor%}
+    {% endif %}
 {% endblock content %}

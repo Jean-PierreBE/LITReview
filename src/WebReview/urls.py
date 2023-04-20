@@ -29,7 +29,7 @@ urlpatterns = [
              name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', connexion.views.SignupView.as_view(), name='signup'),
-    path('home/posts', login_required(review.views.PostsView.as_view()), name='posts'),
+    path('home/posts', login_required(review.views.PostsView.as_view(title01="Vos posts")), name='posts'),
     path('home/abonnements', login_required(review.views.UserFollowsView.as_view(title01="Suivre d'autres utilisateurs", action01 = "envoyer",
                                                                   title02="Abonnements",
                                                                   title03="Abonnés")),

@@ -67,10 +67,6 @@ form > p {
     width: 6%;
 }
 
-#id_email {
-    width: 25%;
-}
-
-#id_title ,#id_description{
+#id_email,#id_title ,#id_description {
     width: 25%;
 }
