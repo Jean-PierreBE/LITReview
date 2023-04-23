@@ -1,8 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Votre flux</h2>
-    <ul class="menu_button">
-        <li><a href="{% url 'create_review' %}">Créer une critique</a></li>
-        <li><a href="{% url 'create_ticket' %}">Créer un ticket</a></li>
-    </ul>
+    <div class="container">
+        <div class="row">
+            <h2 class="align-middle">Votre flux</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <a class="btn btn-success" href="{% url 'create_review' %}">
+                    <i class="bi bi-lightning"></i>
+                    Créer une critique
+                </a>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-success" href="{% url 'create_ticket' %}">
+                    <i class="bi bi-envelope-open"></i>
+                    Créer un ticket
+                </a>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

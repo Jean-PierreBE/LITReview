@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-    <table>
-        <tr>
-            <td align="center" width="50%">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
                 <h4>Inscrivez-vous maintenant !</h4>
                 <form action="{% url 'signup' %}">
                 <input type="submit" value="S'inscrire" />
                 </form>
-            </td>
-            <td align="left" width="50%">
+            </div>
+            <div class="col-8">
                 <h2>Connectez vous</h2>
                 <form method="POST">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <button type="submit" >Se connecter</button>
                 </form>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}

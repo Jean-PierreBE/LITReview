@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>{{ message }}</p>
-    <form method="POST">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >S'inscrire'</button>
-    </form>
+<div class="container">
+    <div  class="row">
+        <div class="col">
+            <p>{{ message }}</p>
+            <form method="POST">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <div class="container">
+                <div  class="row">
+                    <div class="col-1">
+                        <button type="submit" >S'inscrire</button>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-primary" href="{% url 'login' %}">Retour</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}

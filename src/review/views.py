@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.views import View
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, View
 from django.urls import reverse_lazy
 from review.forms import TicketForm, UserFollowsForm
 from review.models import Ticket, UserFollows
