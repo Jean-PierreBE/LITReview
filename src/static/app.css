@@ -13,6 +13,10 @@ form > p {
     width: 6%;
 }
 
+#id_followed_name{
+    width: 50%;
+}
+
 #id_username, #id_password{
     width: 20%;
 }
@@ -20,3 +24,14 @@ form > p {
 #id_email,#id_title ,#id_description {
     width: 25%;
 }
+#id_rev_description, #id_rev_body {
+    height: 120px;
+}
+.inline {
+    display: flex;
+    margin: 0 20px 0 20px;
+}
+inline > label {
+    position:relative; left:50px;
+}
+

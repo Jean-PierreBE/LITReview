@@ -1,10 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect, redirect
+from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.views import View
 from django.views.generic import TemplateView, CreateView, View
 from django.urls import reverse_lazy
-from review.forms import TicketForm, UserFollowsForm
+from review.forms import TicketForm, UserFollowsForm, ReviewFormFirst, ReviewFormLast
 from review.models import Ticket, UserFollows
 from connexion.models import ConnectUser
 from django.contrib import messages
@@ -23,48 +23,71 @@ class PostsView(View):
 
     def get(self, request):
         return render(request, self.template_name)
-class UserFollowsView(CreateView):
-    model = UserFollows
+
+def follow_user_del(request, pk):
+    follow = get_object_or_404(UserFollows, pk=pk)  # Get your current cat
+
+    if request.method == 'POST':  # If method is POST,
+        follow.delete()  # delete the cat.
+        messages.add_message(request, messages.SUCCESS, "L'utilisateur a bien été retiré de vos abonnements")
+        return redirect('abonnements')
+
+
+class UserFollowsView(View):
     template_name = 'review/abonnements.html'
-    form_class = UserFollowsForm
+    form = UserFollowsForm
     success_url = reverse_lazy('home')
-    title01 = "default"
-    title02 = "default"
-    title03 = "default"
-    action01 = "default"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context["title01"] = self.title01
-        context["title02"] = self.title02
-        context["title03"] = self.title03
-        context["action01"] = self.action01
-        context["follows"] = UserFollows.objects.filter(user=self.request.user)
-        context["followers"] = UserFollows.objects.filter(followed_user=self.request.user)
-        return context
+    def get(self, request):
+        form = self.form()
+        follows = UserFollows.objects.filter(user=self.request.user)
+        followers = UserFollows.objects.filter(followed_user=self.request.user)
 
+        return render(request,
+                      self.template_name,
+                      {"follows": follows,
+                       "form": form,
+                       "followers": followers})
     def post(self, request, *args, **kwargs):
-        form = UserFollowsForm(request.POST)
+        form = self.form(request.POST)
         errors = []
         if form.is_valid():
-            form.instance.user = self.request.user
-            if self.request.user == form.instance.followed_user:
-                errors.append("Un utilisateur ne peut se suivre lui-même!")
-            if UserFollows.objects.filter(user=self.request.user, followed_user=form.instance.followed_user).exists():
-                errors.append("Le couple "+ str(self.request.user) + " et "+ str(form.instance.followed_user) + " existe déja !!")
+            follow = UserFollows()
+            follow.user = self.request.user
+            followed_name = form.cleaned_data["followed_name"]
+            try:
+                followed_user = ConnectUser.objects.get(pseudo=followed_name)
+            except ConnectUser.DoesNotExist:
+                errors.append("Aucun user ne correspond à ce nom.")
+            if len(errors) == 0:
+                if self.request.user == followed_user:
+                    errors.append("Un utilisateur ne peut se suivre lui-même!")
+                if UserFollows.objects.filter(user=self.request.user, followed_user=followed_user).exists():
+                    errors.append("Le couple "+ str(self.request.user) + " et "+ str(followed_user) + " existe déja !!")
             if not errors:
-                form.save()
-                messages.add_message(request, messages.SUCCESS, "Le couple "+ str(self.request.user) + ","+ str(form.instance.followed_user) + " a été créé avec succès!!")
+                follow.followed_user = followed_user
+                follow.save()
+                messages.add_message(request, messages.SUCCESS, "Le couple "+ str(self.request.user) + ","+ str(followed_user) + " a été créé avec succès!!")
                 return redirect('abonnements')
             else:
                 for error in errors:
                     messages.add_message(request, messages.ERROR, error)
-                    print(messages.ERROR)
                 return redirect('abonnements')
 
 class ReviewView(View):
+
+    template_name = 'review/crud_review.html'
+    form01 = ReviewFormFirst
+    form02 = ReviewFormLast
+    success_url = reverse_lazy('home')
+
     def get(self, request):
-        return render(request, 'review/crud_review.html')
+        form01 = self.form01()
+        form02 = self.form02()
+        return render(request,
+                      self.template_name,
+                      {"title": "Créer une critique","action":"créer","sub_title01":"livre/Article","sub_title02":"Critique",
+                       "form01": form01, "form02": form02})
 
 class CreateTicketView(CreateView):
     model = Ticket

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
+    <h2>Inscrivez-vous</h2>
     <div  class="row">
         <div class="col">
             <p>{{ message }}</p>
@@ -10,10 +11,10 @@
             <div class="container">
                 <div  class="row">
                     <div class="col-1">
-                        <button type="submit" >S'inscrire</button>
+                        <a class="btn btn-primary" href="{% url 'login' %}">Retour</a>
                     </div>
                     <div class="col-3">
-                        <a class="btn btn-primary" href="{% url 'login' %}">Retour</a>
+                        <button type="submit" >S'inscrire</button>
                     </div>
                 </div>
             </div>
