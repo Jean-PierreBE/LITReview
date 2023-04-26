@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container">
     <h2>{{ title }}</h2>
+    {% include 'messages.html' %}
     <div class="row">
         <div class="col-4">
             <form enctype="multipart/form-data" method="POST">
@@ -13,7 +14,6 @@
             <input type="submit" value={{ action }}>
             </form>
         </div>
-
     </div>
 </div>
 {% endblock content %}

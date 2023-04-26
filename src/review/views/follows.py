@@ -1,29 +1,11 @@
-from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView, CreateView, View
 from django.urls import reverse_lazy
-from review.forms import TicketForm, UserFollowsForm, ReviewFormFirst, ReviewFormLast
-from review.models import Ticket, UserFollows
+from review.forms import UserFollowsForm
+from review.models import UserFollows
 from connexion.models import ConnectUser
 from django.contrib import messages
-
 # Create your views here.
-class HomeView(TemplateView):
-    template_name = 'review/home.html'
-
-class PostsView(View):
-    template_name = 'review/posts.html'
-    title01 = "default"
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context["title01"] = self.title01
-        return context
-
-    def get(self, request):
-        return render(request, self.template_name)
-
 def follow_user_del(request, pk):
     follow = get_object_or_404(UserFollows, pk=pk)  # Get your current cat
 
@@ -73,36 +55,3 @@ class UserFollowsView(View):
                 for error in errors:
                     messages.add_message(request, messages.ERROR, error)
                 return redirect('abonnements')
-
-class ReviewView(View):
-
-    template_name = 'review/crud_review.html'
-    form01 = ReviewFormFirst
-    form02 = ReviewFormLast
-    success_url = reverse_lazy('home')
-
-    def get(self, request):
-        form01 = self.form01()
-        form02 = self.form02()
-        return render(request,
-                      self.template_name,
-                      {"title": "Créer une critique","action":"créer","sub_title01":"livre/Article","sub_title02":"Critique",
-                       "form01": form01, "form02": form02})
-
-class CreateTicketView(CreateView):
-    model = Ticket
-    template_name = 'review/crud_ticket.html'
-    form_class = TicketForm
-    success_url = reverse_lazy('home')
-    title = "default"
-    action = "default"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context["title"] = self.title
-        context["action"] = self.action
-        return context
-    def form_valid(self, form):
-        if self.request.user.is_authenticated:
-            form.instance.user = self.request.user
-        return super().form_valid(form)

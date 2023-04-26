@@ -2,16 +2,7 @@
 {% block content %}
 <div class="container">
     <h2>Suivre d'autres utilisateurs</h2>
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <p class="text-danger"> {{ message }} </p>
-            {% endif %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <p class="text-success"> {{ message }} </p>
-            {% endif %}
-        {% endfor%}
-    {% endif %}
+    {% include 'messages.html' %}
     <form method="POST">
         {% csrf_token %}
         <div class="container">

@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>{{ title01 }}</h2>
-    {% if messages %}
-        {% for message in messages %}
-            <p> {{ message }} </p>
-        {% endfor%}
-    {% endif %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    {% include 'messages.html' %}
+    <div class="row">
+        <div class="col-6">
+            {% for post in posts %}
+                <h6>vous avez publié une critique le {{post.review_created}}</h6>
+                <div>{{ post.rating }}</div>
+                <div>{{ post.ticket.title}}</div>
+                <div>{{ post.ticket.description}}</div>
+                <div style="width: 150px">
+                    <img src="{{ post.ticket.image.url }}" style="width: 100%">
+                </div>
+
+            {% endfor%}
+        </div>
+    </div>
+</div>
 {% endblock content %}

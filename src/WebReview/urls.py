@@ -20,6 +20,8 @@ import review.views
 import connexion.views
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,10 +31,10 @@ urlpatterns = [
              name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', connexion.views.SignupView.as_view(), name='signup'),
-    path('home/posts', login_required(review.views.PostsView.as_view(title01="Vos posts")), name='posts'),
+    path('home/posts', login_required(review.views.PostsView.as_view()), name='posts'),
     path('home/abonnements', login_required(review.views.UserFollowsView.as_view()),name='abonnements'),
     path('home/abonnements/<int:pk>', login_required(review.views.follow_user_del), name='delete_abonnements'),
     path('home/create_review', login_required(review.views.ReviewView.as_view()), name='create_review'),
     path('home/create_ticket', login_required(review.views.CreateTicketView.as_view(title="Créer un ticket", action = "créer")), name='create_ticket'),
     path('home/', login_required(review.views.HomeView.as_view()), name='home'),
-]
+] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

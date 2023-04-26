@@ -1,0 +1,10 @@
+{% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <p class="text-danger"> {{ message }} </p>
+            {% endif %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <p class="text-success"> {{ message }} </p>
+            {% endif %}
+        {% endfor%}
+    {% endif %}
