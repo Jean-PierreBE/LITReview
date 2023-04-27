@@ -20,7 +20,6 @@ class ReviewView(View):
                        "form01": form01,"form02": form02})
 
     def post(self, request, *args, **kwargs):
-        print("before self.form01 ")
         form01 = self.form01(request.POST, request.FILES)
         form02 = self.form02(request.POST)
         errors = []

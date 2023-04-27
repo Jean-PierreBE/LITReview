@@ -1,0 +1,14 @@
+<h6>Vous avez publié un ticket</h6>
+<div>{{ post.title}}</div>
+<div>{{ post.description}}</div>
+<div style="width: 150px">
+    <img src="{{ post.image.url }}" style="width: 100%">
+</div>
+<form action="{% url 'delete_abonnements' post.id %}" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-success">Modifier</button>
+</form>
+<form onsubmit="return confirm('Etes-vous sûr?');" action="{% url 'delete_abonnements' post.id %}" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-warning">Supprimer</button>
+</form>

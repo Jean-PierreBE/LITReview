@@ -3,22 +3,35 @@ from django.views import View
 from review.models import Ticket, Review
 from itertools import chain
 from django.db.models import CharField, Value
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 class PostsView(View):
     template_name = 'review/posts.html'
 
     def get(self, request):
-        posts = Review.objects.select_related("ticket").filter(user=self.request.user)
-        print(str(posts.query))
-        for post in posts:
-            print("post.image " + str(post.ticket.image))
-            print("post.description " + str(post.ticket.description))
-            print("post.title " + str(post.ticket.title))
+        reviews = Review.objects.select_related("ticket").filter(user=self.request.user)
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
+        tickets = Ticket.objects.filter(user=self.request.user).exclude(id__in=reviews.values_list('ticket', flat=True))
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+
+        post_list = sorted(
+            chain(reviews, tickets),
+            key=lambda instance: instance.time_created,
+            reverse=True
+        )
+        page = request.GET.get('page', 1)
+        paginator = Paginator(post_list, 2)
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
 
         return render(request,
                       self.template_name,
-                      {"title": "Vos Posts", "update": "Modifier", "delete": "supprimer",
+                      context={"title": "Vos Posts", "update": "Modifier", "delete": "supprimer",
                        "posts": posts})
 

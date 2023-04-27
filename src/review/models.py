@@ -9,7 +9,7 @@ class Ticket(models.Model):
     description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(null=True, blank=True)
-    ticket_created = models.DateTimeField(auto_now_add=True)
+    time_created = models.DateTimeField(auto_now_add=True)
 
 class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
@@ -17,7 +17,7 @@ class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     headline = models.CharField(max_length=128)
     body = models.TextField(max_length=8192, blank=True)
-    review_created = models.DateTimeField(auto_now_add=True)
+    time_created = models.DateTimeField(auto_now_add=True)
 
 class UserFollows(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='following')
