@@ -1,24 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
+<div class="container" >
     <h2>{{ title }}</h2>
     {% include 'messages.html' %}
-    <div class="row">
-        <div class="col" >
-            {% for post in posts %}
-                {% if post.content_type == 'TICKET' %}
-                    {% include 'ticket_snippet.html' %}
-                {% elif post.content_type == 'REVIEW' %}
-                    {% include 'review_snippet.html' %}
-                {% endif %}
-            {% endfor %}
-        </div>
+    <div class="col-6">
+        {% for post in posts %}
+            {% if post.content_type == 'TICKET' %}
+                {% include 'ticket_snippet.html' %}
+            {% elif post.content_type == 'REVIEW' %}
+                {% include 'review_snippet.html' %}
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
 {% if posts.has_other_pages %}
-  <ul class="pagination">
+  <ul class="pagination pagination-lg justify-content-center">
     {% if posts.has_previous %}
-      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+      <li class="page-item"><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
     {% else %}
       <li class="disabled"><span>&laquo;</span></li>
     {% endif %}

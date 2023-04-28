@@ -33,5 +33,5 @@ class PostsView(View):
         return render(request,
                       self.template_name,
                       context={"title": "Vos Posts", "update": "Modifier", "delete": "supprimer",
-                       "posts": posts})
+                       "posts": posts, 'loop_times': range(0, 5)})
 
