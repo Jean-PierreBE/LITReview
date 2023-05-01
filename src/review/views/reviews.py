@@ -1,11 +1,41 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import View
-from review.forms import ReviewFormLast, ReviewFormFirst
+from django.views.generic.edit import UpdateView
+from review.forms import ReviewFormLast, ReviewFormFirst, ReviewForm
 from review.models import Review, Ticket
 from django.contrib import messages
 # Create your views here.
 
-class ReviewView(View):
+def review_del(request, pk):
+    review = get_object_or_404(Review, pk=pk)  #
+
+    if request.method == 'POST':
+        review.delete()
+        messages.add_message(request, messages.SUCCESS, "La critique a bien été supprimée")
+        return redirect('posts')
+
+class review_update(UpdateView):
+    template_name = 'review/edit_review.html'
+    form_class = ReviewForm
+    model = Review
+    success_url = reverse_lazy('posts')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        ticket = get_object_or_404(Ticket, pk=self.object.ticket_id)
+        context["title"] = "Modifier votre critique"
+        context["action"] = "envoyer"
+        context["ticket"] = ticket
+        return context
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.user = self.request.user
+            messages.success(self.request, "La critique a bien été mise à jour")
+        return super().form_valid(form)
+
+class OwnReview_create(View):
 
     template_name = 'review/crud_review.html'
     form01 = ReviewFormFirst
@@ -41,8 +71,8 @@ class ReviewView(View):
                 review.ticket_id = ticket.id
                 review.save()
                 messages.add_message(request, messages.SUCCESS, "La critique a été créée avec succès!!")
-                return redirect('create_review')
+                return redirect('create_own_review')
             else:
                 for error in errors:
                     messages.add_message(request, messages.ERROR, error)
-                return redirect('create_review')
+                return redirect('create_own_review')

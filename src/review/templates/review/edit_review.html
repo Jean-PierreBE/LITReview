@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>{{ title }}</h2>
+    {% include 'messages.html' %}
+    <div class="row">
+        <div class="col-4">
+            <div>{{ ticket.title }}</div>
+            <div style="width: 150px">
+            <img src="{{ ticket.image.url }}" style="width: 100%">
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value={{ action }}>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

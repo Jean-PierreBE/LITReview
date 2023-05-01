@@ -4,18 +4,17 @@
         <div>{{ post.title}}</div>
         <div>{{ post.description}}</div>
         <div style="width: 150px">
-            <img src="{{ post.image.url }}" style="width: 100%">
+            <img src="{{ post.image_url|default_if_none:'#' }}" style="width: 100%">
         </div>
     <div>
     <div class="row mt-3">
         <div class="col-2">
-            <form action="{% url 'delete_abonnements' post.id %}" method="POST">
-                {% csrf_token %}
-                <button class="btn btn-success">Modifier</button>
-            </form>
+            <a class="btn btn-success" href="{% url 'edit_ticket' post.id %}">
+               Modifier
+            </a>
         </div>
         <div class="col-2">
-            <form onsubmit="return confirm('Etes-vous sûr?');" action="{% url 'delete_abonnements' post.id %}" method="POST">
+            <form onsubmit="return confirm('Etes-vous sûr?');" action="{% url 'delete_ticket' post.id %}" method="POST">
                 {% csrf_token %}
                 <button class="btn btn-warning">Supprimer</button>
             </form>

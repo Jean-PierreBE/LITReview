@@ -22,13 +22,12 @@
     </div>
     <div class="row mt-3">
         <div class="col-2">
-            <form action="{% url 'delete_abonnements' post.id %}" method="POST">
-                {% csrf_token %}
-                <button class="btn btn-success">Modifier</button>
-            </form>
+            <a class="btn btn-success" href="{% url 'edit_review' post.id %}">
+               Modifier
+            </a>
         </div>
         <div class="col-2">
-            <form onsubmit="return confirm('Etes-vous sûr?');" action="{% url 'delete_abonnements' post.id %}" method="POST">
+            <form onsubmit="return confirm('Etes-vous sûr?');" action="{% url 'delete_review' post.id %}" method="POST">
                 {% csrf_token %}
                 <button class="btn btn-warning">Supprimer</button>
             </form>
