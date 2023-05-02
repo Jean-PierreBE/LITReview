@@ -2,19 +2,41 @@ from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import View
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from review.forms import ReviewFormLast, ReviewFormFirst, ReviewForm
 from review.models import Review, Ticket
 from django.contrib import messages
 # Create your views here.
 
-def review_del(request, pk):
-    review = get_object_or_404(Review, pk=pk)  #
+class review_delete(DeleteView):
+    model = Review
+    success_url = reverse_lazy('posts')
 
-    if request.method == 'POST':
-        review.delete()
-        messages.add_message(request, messages.SUCCESS, "La critique a bien été supprimée")
-        return redirect('posts')
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            messages.success(self.request, "La critique a bien été supprimée")
+        return super().form_valid(form)
+
+class review_create(CreateView):
+    template_name = 'review/edit_review.html'
+    form_class = ReviewForm
+    model = Review
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        ticket = get_object_or_404(Ticket, pk=self.kwargs['ticket_pk'])
+        context["title"] = "Créer une critique"
+        context["action"] = "envoyer"
+        context["ticket"] = ticket
+        return context
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            ticket = get_object_or_404(Ticket, pk=self.kwargs['ticket_pk'])
+            form.instance.user = self.request.user
+            form.instance.ticket_id = ticket.id
+            messages.success(self.request, "La critique a bien été créee")
+        return super().form_valid(form)
 
 class review_update(UpdateView):
     template_name = 'review/edit_review.html'

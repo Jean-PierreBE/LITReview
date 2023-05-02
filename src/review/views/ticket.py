@@ -1,40 +1,37 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from django.views.generic import TemplateView, CreateView, View
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from review.forms import TicketForm
 from review.models import Ticket
-from connexion.models import ConnectUser
 from django.contrib import messages
-from itertools import chain
 from django.conf import settings
 # Create your views here.
 
-def ticket_del(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk)
+class ticket_delete(DeleteView):
+    model = Ticket
+    success_url = reverse_lazy('posts')
 
-    if request.method == 'POST':
-        ticket.delete()
-        messages.add_message(request, messages.SUCCESS, "Le ticket a bien été supprimé")
-        return redirect('posts')
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            messages.success(self.request, "Le ticket a bien été supprimé")
+        return super().form_valid(form)
 
-def ticket_update(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk)
+class ticket_update(UpdateView):
+    template_name = 'review/crud_ticket.html'
+    form_class = TicketForm
+    model = Ticket
+    success_url = reverse_lazy('posts')
 
-    if request.method == 'POST':
-        edit_ticket = TicketForm(request.POST, request.FILES, instance=ticket)
-        if edit_ticket.is_valid():
-            edit_ticket.save()
-            return redirect('posts')
-    else:
-        edit_ticket = TicketForm(instance=ticket)
-
-    context = {
-        'form': edit_ticket,
-        'title': "Modification d'un ticket",
-        'action': "Modifier",
-    }
-    return render(request, 'review/crud_ticket.html', context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["title"] = "Modification d'un ticket"
+        context["action"] = "envoyer"
+        return context
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.user = self.request.user
+            messages.success(self.request, "Le ticket a bien été mis à jour")
+        return super().form_valid(form)
 
 class CreateTicketView(CreateView):
 

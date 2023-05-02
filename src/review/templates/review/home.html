@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <h2 class="align-middle">Votre flux</h2>
+            <h2 class="align-middle">{{ title }}</h2>
         </div>
     </div>
     <div class="container">
@@ -10,15 +10,16 @@
             <div class="col-3">
                 <a class="btn btn-success" href="{% url 'create_ticket' %}">
                     <i class="bi bi-envelope-open"></i>
-                    Demander une critique
+                    {{ ask }}
                 </a>
             </div>
             <div class="col-2">
                 <a class="btn btn-success" href="{% url 'create_own_review' %}">
                     <i class="bi bi-lightning"></i>
-                    Créer une critique
+                    {{ create }}
                 </a>
             </div>
         </div>
     </div>
+{% include 'detail_flux.html' %}
 {% endblock content %}

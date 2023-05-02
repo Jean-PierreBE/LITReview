@@ -1,0 +1,17 @@
+<div class="container border border-success">
+    <div class="row mt-3">
+        <h6>Vous avez publié un ticket</h6>
+        <div>{{ post.title}}</div>
+        <div>{{ post.description}}</div>
+        <div style="width: 150px">
+            <img src="{{ post.image_url|default_if_none:'#' }}" style="width: 100%">
+        </div>
+    <div>
+    <div class="row mt-3">
+        <div class="col-4">
+            <a class="btn btn-success" href="{% url 'create_review' post.id %}">
+               {{ update }}
+            </a>
+        </div>
+    </div>
+</div>

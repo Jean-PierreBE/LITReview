@@ -1,0 +1,23 @@
+<div class="container  border border-success">
+    <div class="row mt-3">
+        <h6>vous avez publié une critique le {{post.time_created}}</h6>
+        <div class="row">
+            <div class="col">
+                <div>{{ post.headline }}</div>
+            </div>
+            <div class="col">
+                {% include 'rating.html' %}
+            </div>
+        </div>
+        <div>{{ post.body }}</div>
+        {% if post.ticket.user == post.user %}
+            <h6>Ticket - vous</h6>
+        {% else %}
+            <h6>Ticket ouvert par {{ post.ticket.user }}</h6>
+        {% endif %}
+        <div>{{ post.ticket.title }}</div>
+        <div style="width: 150px">
+            <img src="{{ post.ticket.image.url }}" style="width: 100%">
+        </div>
+    </div>
+</div>

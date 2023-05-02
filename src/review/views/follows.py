@@ -1,19 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 from review.forms import UserFollowsForm
 from review.models import UserFollows
 from connexion.models import ConnectUser
 from django.contrib import messages
 # Create your views here.
-def follow_user_del(request, pk):
-    follow = get_object_or_404(UserFollows, pk=pk)  # Get your current cat
 
-    if request.method == 'POST':  # If method is POST,
-        follow.delete()  # delete the cat.
-        messages.add_message(request, messages.SUCCESS, "L'utilisateur a bien été retiré de vos abonnements")
-        return redirect('abonnements')
+class follow_user_delete(DeleteView):
+    model = UserFollows
+    success_url = reverse_lazy('abonnements')
 
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            messages.success(self.request, "L'utilisateur a bien été retiré de vos abonnements")
+        return super().form_valid(form)
 
 class UserFollowsView(View):
     template_name = 'review/abonnements.html'
