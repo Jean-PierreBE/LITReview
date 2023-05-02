@@ -1,6 +1,10 @@
 <div class="container  border border-success">
     <div class="row mt-3">
-        <h6>vous avez publié une critique le {{post.time_created}}</h6>
+        {% if post.user|cut:" " == user.get_username|cut:" " %}
+            <h6>vous avez publié une critique le {{post.time_created}} </h6>
+        {% else %}
+            <h6>{{ post.user }} a publié une critique le {{post.time_created}}</h6>
+        {% endif %}
         <div class="row">
             <div class="col">
                 <div>{{ post.headline }}</div>
@@ -10,10 +14,10 @@
             </div>
         </div>
         <div>{{ post.body }}</div>
-        {% if post.ticket.user == post.user %}
+        {% if post.ticket.user|cut:" " == user.get_username|cut:" " %}
             <h6>Ticket - vous</h6>
         {% else %}
-            <h6>Ticket ouvert par {{ post.ticket.user }}</h6>
+            <h6>Ticket ouvert par {{ post.ticket.user }} le {{post.ticket.time_created}}</h6>
         {% endif %}
         <div>{{ post.ticket.title }}</div>
         <div style="width: 150px">
