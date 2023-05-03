@@ -1,11 +1,10 @@
-from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from review.forms import TicketForm
 from review.models import Ticket
 from django.contrib import messages
-from django.conf import settings
 # Create your views here.
+
 
 class ticket_delete(DeleteView):
     model = Ticket
@@ -15,6 +14,7 @@ class ticket_delete(DeleteView):
         if self.request.user.is_authenticated:
             messages.success(self.request, "Le ticket a bien été supprimé")
         return super().form_valid(form)
+
 
 class ticket_update(UpdateView):
     template_name = 'review/crud_ticket.html'
@@ -27,11 +27,13 @@ class ticket_update(UpdateView):
         context["title"] = "Modification d'un ticket"
         context["action"] = "envoyer"
         return context
+
     def form_valid(self, form):
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user
             messages.success(self.request, "Le ticket a bien été mis à jour")
         return super().form_valid(form)
+
 
 class CreateTicketView(CreateView):
 
@@ -45,6 +47,7 @@ class CreateTicketView(CreateView):
         context["title"] = "Créer un ticket"
         context["action"] = "Envoyer"
         return context
+
     def form_valid(self, form):
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user

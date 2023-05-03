@@ -5,6 +5,7 @@ from itertools import chain
 from django.db.models import CharField, Value
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 # Create your views here.
 class PostsView(View):
     template_name = 'review/posts.html'
@@ -13,7 +14,8 @@ class PostsView(View):
         reviews = Review.objects.select_related("ticket").filter(user=self.request.user)
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
-        tickets = Ticket.objects.filter(user=self.request.user).exclude(id__in=reviews.values_list('ticket', flat=True))
+        tickets = Ticket.objects.filter(user=self.request.user).exclude(
+            id__in=reviews.values_list('ticket', flat=True))
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
         post_list = sorted(
@@ -33,5 +35,4 @@ class PostsView(View):
         return render(request,
                       self.template_name,
                       context={"title": "Vos Posts", "update": "Modifier", "delete": "supprimer",
-                       "posts": posts, 'loop_times': range(0, 5)})
-
+                               "posts": posts, 'loop_times': range(0, 5)})

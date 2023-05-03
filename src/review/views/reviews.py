@@ -1,12 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from review.forms import ReviewFormLast, ReviewFormFirst, ReviewForm
 from review.models import Review, Ticket
 from django.contrib import messages
 # Create your views here.
+
 
 class review_delete(DeleteView):
     model = Review
@@ -16,6 +16,7 @@ class review_delete(DeleteView):
         if self.request.user.is_authenticated:
             messages.success(self.request, "La critique a bien été supprimée")
         return super().form_valid(form)
+
 
 class review_create(CreateView):
     template_name = 'review/edit_review.html'
@@ -30,6 +31,7 @@ class review_create(CreateView):
         context["action"] = "envoyer"
         context["ticket"] = ticket
         return context
+
     def form_valid(self, form):
         if self.request.user.is_authenticated:
             ticket = get_object_or_404(Ticket, pk=self.kwargs['ticket_pk'])
@@ -37,6 +39,7 @@ class review_create(CreateView):
             form.instance.ticket_id = ticket.id
             messages.success(self.request, "La critique a bien été créee")
         return super().form_valid(form)
+
 
 class review_update(UpdateView):
     template_name = 'review/edit_review.html'
@@ -51,11 +54,13 @@ class review_update(UpdateView):
         context["action"] = "envoyer"
         context["ticket"] = ticket
         return context
+
     def form_valid(self, form):
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user
             messages.success(self.request, "La critique a bien été mise à jour")
         return super().form_valid(form)
+
 
 class OwnReview_create(View):
 
@@ -68,8 +73,9 @@ class OwnReview_create(View):
         form02 = self.form02()
         return render(request,
                       self.template_name,
-                      {"title": "Créer une critique","action":"créer","sub_title01":"livre/Article","sub_title02":"Critique",
-                       "form01": form01,"form02": form02})
+                      {"title": "Créer une critique", "action": "créer",
+                       "sub_title01": "livre/Article", "sub_title02": "Critique",
+                       "form01": form01, "form02": form02})
 
     def post(self, request, *args, **kwargs):
         form01 = self.form01(request.POST, request.FILES)

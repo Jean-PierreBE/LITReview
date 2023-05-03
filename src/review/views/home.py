@@ -1,6 +1,5 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
-from django.views import View
 from review.models import Ticket, Review, UserFollows
 from itertools import chain
 from django.db.models import CharField, Value, Q
@@ -20,15 +19,16 @@ class HomeView(TemplateView):
 
         # reviews from users i follow , who follow me and my reviews
         reviews = Review.objects.select_related("ticket").filter(Q(user=self.request.user) |
-                                                                  Q(user__in=myusers.values_list('followed_user', flat=True)) |
-                                                                  Q(user__in=follusers.values_list('user', flat=True)))
+                                                                 Q(user__in=myusers.values_list(
+                                                                     'followed_user', flat=True)) |
+                                                                 Q(user__in=follusers.values_list('user', flat=True)))
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
         # reviews from users i follow , who follow me and my reviews without reviews
         tickets = Ticket.objects.filter(Q(user=self.request.user) |
-                                      Q(user__in=myusers.values_list('followed_user', flat=True)) |
-                                      Q(user__in=follusers.values_list('user', flat=True))).exclude(id__in=reviews.values_list('ticket', flat=True))
-
+                                        Q(user__in=myusers.values_list('followed_user', flat=True)) |
+                                        Q(user__in=follusers.values_list('user', flat=True))) \
+            .exclude(id__in=reviews.values_list('ticket', flat=True))
 
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
@@ -48,6 +48,6 @@ class HomeView(TemplateView):
 
         return render(request,
                       self.template_name,
-                      context={"title": "Votre flux", "ask": "Demander une critique","create": "Créer une critique",
+                      context={"title": "Votre flux", "ask": "Demander une critique", "create": "Créer une critique",
                                "update": "Ajouter une critique",
-                       "posts": posts, 'loop_times': range(0, 5)})
+                               "posts": posts, 'loop_times': range(0, 5)})

@@ -4,6 +4,7 @@ from connexion.models import ConnectUser
 from django.urls import reverse_lazy
 # Create your views here.
 
+
 class SignupView(CreateView):
     model = ConnectUser
     template_name = 'connexion/signup.html'

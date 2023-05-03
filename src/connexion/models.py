@@ -5,6 +5,7 @@ MESSAGE_NO_EMAIL = "Veuillez saisir un mail !"
 MESSAGE_NO_PSEUDO = "Veuillez saisir un pseudo !"
 # Create your models here.
 
+
 class MyUserManager(BaseUserManager):
     def create_user(self, pseudo, email, password=None):
         if not pseudo:
@@ -27,6 +28,7 @@ class MyUserManager(BaseUserManager):
         user.is_staff = True
         user.save()
         return user
+
 
 class ConnectUser(AbstractBaseUser):
     pseudo = models.CharField(

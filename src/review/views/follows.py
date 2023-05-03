@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DeleteView
 from django.urls import reverse_lazy
@@ -8,6 +8,7 @@ from connexion.models import ConnectUser
 from django.contrib import messages
 # Create your views here.
 
+
 class follow_user_delete(DeleteView):
     model = UserFollows
     success_url = reverse_lazy('abonnements')
@@ -16,6 +17,7 @@ class follow_user_delete(DeleteView):
         if self.request.user.is_authenticated:
             messages.success(self.request, "L'utilisateur a bien été retiré de vos abonnements")
         return super().form_valid(form)
+
 
 class UserFollowsView(View):
     template_name = 'review/abonnements.html'
@@ -32,6 +34,7 @@ class UserFollowsView(View):
                       {"follows": follows,
                        "form": form,
                        "followers": followers})
+
     def post(self, request, *args, **kwargs):
         form = self.form(request.POST)
         errors = []
@@ -47,11 +50,13 @@ class UserFollowsView(View):
                 if self.request.user == followed_user:
                     errors.append("Un utilisateur ne peut se suivre lui-même!")
                 if UserFollows.objects.filter(user=self.request.user, followed_user=followed_user).exists():
-                    errors.append("Le couple "+ str(self.request.user) + " et "+ str(followed_user) + " existe déja !!")
+                    errors.append("Le couple " + str(self.request.user) + " et " +
+                                  str(followed_user) + " existe déja !!")
             if not errors:
                 follow.followed_user = followed_user
                 follow.save()
-                messages.add_message(request, messages.SUCCESS, "Le couple "+ str(self.request.user) + ","+ str(followed_user) + " a été créé avec succès!!")
+                messages.add_message(request, messages.SUCCESS, "Le couple " + str(self.request.user) + ","
+                                     + str(followed_user) + " a été créé avec succès!!")
                 return redirect('abonnements')
             else:
                 for error in errors:
