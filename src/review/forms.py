@@ -6,15 +6,15 @@ RATING_CHOICES = [('0', ' 0'), ('1', ' 1'), ('2', ' 2'), ('3', ' 3'), ('4', ' 4'
 
 class ReviewFormFirst(forms.Form):
     rev_title = forms.CharField(label="Titre", widget=forms.TextInput())
-    rev_description = forms.CharField(label="Description", widget=forms.Textarea)
-    rev_image = forms.ImageField(label="Image")
+    rev_description = forms.CharField(label="Description", widget=forms.Textarea, required=False)
+    rev_image = forms.ImageField(label="Image", required=False)
 
 
 class ReviewFormLast(forms.Form):
     rev_headline = forms.CharField(label="Titre", widget=forms.TextInput())
     rev_rating = forms.ChoiceField(label="Note", widget=forms.RadioSelect(attrs={'class': 'inline'}), initial='3',
                                    choices=RATING_CHOICES)
-    rev_body = forms.CharField(label="Commentaire", widget=forms.Textarea)
+    rev_body = forms.CharField(label="Commentaire", widget=forms.Textarea, required=False)
 
 
 class ReviewForm(forms.ModelForm):

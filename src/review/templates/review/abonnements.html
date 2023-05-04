@@ -22,7 +22,7 @@
              <div class="container">
                  <div class="row">
                      <div class="col-1 border">
-                         {{ follow.followed_user}}
+                         {{ follow.followed_user|cut:" "}}
                      </div>
                      <div class="col-2">
                          <form onsubmit="return confirm('Etes-vous sûr?');" action="{% url 'delete_abonnements' follow.id %}" method="POST">
@@ -39,7 +39,7 @@
     {% if followers %}
         {% for follower in followers %}
              <div  class="border w-25">
-               {{ follower.user}}
+               {{ follower.user|cut:" "}}
              </div>
         {% endfor ´%}
     {% endif %}

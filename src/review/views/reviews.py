@@ -28,7 +28,7 @@ class review_create(CreateView):
         context = super().get_context_data()
         ticket = get_object_or_404(Ticket, pk=self.kwargs['ticket_pk'])
         context["title"] = "Créer une critique"
-        context["action"] = "envoyer"
+        context["action"] = "Envoyer"
         context["ticket"] = ticket
         return context
 
@@ -51,7 +51,7 @@ class review_update(UpdateView):
         context = super().get_context_data()
         ticket = get_object_or_404(Ticket, pk=self.object.ticket_id)
         context["title"] = "Modifier votre critique"
-        context["action"] = "envoyer"
+        context["action"] = "Envoyer"
         context["ticket"] = ticket
         return context
 
@@ -73,7 +73,7 @@ class OwnReview_create(View):
         form02 = self.form02()
         return render(request,
                       self.template_name,
-                      {"title": "Créer une critique", "action": "créer",
+                      {"title": "Créer une critique", "action": "Envoyer",
                        "sub_title01": "livre/Article", "sub_title02": "Critique",
                        "form01": form01, "form02": form02})
 

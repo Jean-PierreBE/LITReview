@@ -20,8 +20,10 @@
             <h6>Ticket ouvert par {{ post.ticket.user }} le {{post.ticket.time_created}}</h6>
         {% endif %}
         <div>{{ post.ticket.title }}</div>
-        <div style="width: 150px">
-            <img src="{{ post.ticket.image.url }}" style="width: 100%">
-        </div>
+        {% if post.ticket.image_url %}
+            <div style="width: 150px">
+                <img src="{{ post.ticket.image_url|default_if_none:'#' }}" style="width: 100%">
+            </div>
+        {% endif %}
     </div>
 </div>

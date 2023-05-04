@@ -4,9 +4,10 @@ from review.models import Ticket, Review, UserFollows
 from itertools import chain
 from django.db.models import CharField, Value, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.conf import settings
 
 
-# Create your views here.
+# Create your views here. test jps
 class HomeView(TemplateView):
     template_name = 'review/home.html'
 
@@ -14,23 +15,27 @@ class HomeView(TemplateView):
         # users i follow
         myusers = UserFollows.objects.filter(user=self.request.user)
 
-        # users who follow me
-        follusers = UserFollows.objects.filter(followed_user=self.request.user)
-
         # reviews from users i follow , who follow me and my reviews
         reviews = Review.objects.select_related("ticket").filter(Q(user=self.request.user) |
                                                                  Q(user__in=myusers.values_list(
                                                                      'followed_user', flat=True)) |
-                                                                 Q(user__in=follusers.values_list('user', flat=True)))
+                                                                 Q(ticket__user=self.request.user) |
+                                                                 Q(ticket__user__in=myusers.values_list(
+                                                                     'followed_user', flat=True))
+                                                                 )
+        for review in reviews:
+            print("image " + str(review.ticket.image))
+
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
         # reviews from users i follow , who follow me and my reviews without reviews
         tickets = Ticket.objects.filter(Q(user=self.request.user) |
-                                        Q(user__in=myusers.values_list('followed_user', flat=True)) |
-                                        Q(user__in=follusers.values_list('user', flat=True))) \
+                                        Q(user__in=myusers.values_list('followed_user', flat=True))) \
             .exclude(id__in=reviews.values_list('ticket', flat=True))
 
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+        for review in tickets:
+            print("image " + str(review.image))
 
         post_list = sorted(
             chain(reviews, tickets),
@@ -38,7 +43,7 @@ class HomeView(TemplateView):
             reverse=True
         )
         page = request.GET.get('page', 1)
-        paginator = Paginator(post_list, 2)
+        paginator = Paginator(post_list, settings.NUMBER_OBJECTS_PER_PAGE)
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:

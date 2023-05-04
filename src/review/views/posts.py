@@ -4,6 +4,7 @@ from review.models import Ticket, Review
 from itertools import chain
 from django.db.models import CharField, Value
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.conf import settings
 
 
 # Create your views here.
@@ -14,8 +15,9 @@ class PostsView(View):
         reviews = Review.objects.select_related("ticket").filter(user=self.request.user)
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
-        tickets = Ticket.objects.filter(user=self.request.user).exclude(
-            id__in=reviews.values_list('ticket', flat=True))
+        #tickets = Ticket.objects.filter(user=self.request.user).exclude(
+            #id__in=reviews.values_list('ticket', flat=True))
+        tickets = Ticket.objects.filter(user=self.request.user)
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
         post_list = sorted(
@@ -24,7 +26,7 @@ class PostsView(View):
             reverse=True
         )
         page = request.GET.get('page', 1)
-        paginator = Paginator(post_list, 2)
+        paginator = Paginator(post_list, settings.NUMBER_OBJECTS_PER_PAGE)
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:
