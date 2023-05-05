@@ -23,8 +23,6 @@ class HomeView(TemplateView):
                                                                  Q(ticket__user__in=myusers.values_list(
                                                                      'followed_user', flat=True))
                                                                  )
-        for review in reviews:
-            print("image " + str(review.ticket.image))
 
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
@@ -34,8 +32,6 @@ class HomeView(TemplateView):
             .exclude(id__in=reviews.values_list('ticket', flat=True))
 
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
-        for review in tickets:
-            print("image " + str(review.image))
 
         post_list = sorted(
             chain(reviews, tickets),

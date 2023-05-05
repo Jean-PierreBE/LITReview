@@ -15,8 +15,6 @@ class PostsView(View):
         reviews = Review.objects.select_related("ticket").filter(user=self.request.user)
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
-        #tickets = Ticket.objects.filter(user=self.request.user).exclude(
-            #id__in=reviews.values_list('ticket', flat=True))
         tickets = Ticket.objects.filter(user=self.request.user)
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
