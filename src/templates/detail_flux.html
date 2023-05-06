@@ -1,6 +1,6 @@
 <div class="container" >
     {% include 'messages.html' %}
-    <div class="col-6">
+    <div class="col-6 ">
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
                 {% include 'flux_ticket_snippet.html' %}

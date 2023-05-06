@@ -1,5 +1,5 @@
 <div class="container border border-success">
-    <div class="row mt-4">
+    <div class="row mt-3">
         {% if post.user|cut:" " == user.get_username|cut:" " %}
             <h6>Ticket ouvert par vous le {{post.time_created}} </h6>
         {% else %}
@@ -13,11 +13,13 @@
             </div>
         {% endif %}
     <div>
-    <div class="row mt-4">
-        <div class="col-4">
+    <div class="row mt-3">
+        <div class="col-5">
             <a class="btn btn-success" href="{% url 'create_review' post.id %}">
                {{ update }}
             </a>
         </div>
+    </div>
+    <div class="row mt-3">
     </div>
 </div>
