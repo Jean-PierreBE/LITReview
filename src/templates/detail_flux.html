@@ -1,6 +1,7 @@
-<div class="container" >
+<div class="container">
     {% include 'messages.html' %}
-    <div class="col-6 ">
+    <div class="row">
+        <div class="col-6 ">
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
                 {% include 'flux_ticket_snippet.html' %}
@@ -8,6 +9,6 @@
                 {% include 'flux_review_snippet.html' %}
             {% endif %}
         {% endfor %}
+        </div>
     </div>
 </div>
-{% include 'pagination.html' %}

@@ -3,7 +3,8 @@
 <div class="container" >
     <h2>{{ title }}</h2>
     {% include 'messages.html' %}
-    <div class="col-6">
+    <div class="row">
+        <div class="col-6">
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
                 {% include 'ticket_snippet.html' %}
@@ -11,7 +12,7 @@
                 {% include 'review_snippet.html' %}
             {% endif %}
         {% endfor %}
+        </div>
     </div>
 </div>
-{% include 'pagination.html' %}
 {% endblock content %}

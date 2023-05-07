@@ -1,7 +1,7 @@
 <div class="container  border border-success">
     <div class="row mt-3">
         {% if post.user|cut:" " == user.get_username|cut:" " %}
-            <h6>vous avez publié une critique le {{post.time_created}} </h6>
+            <h6>Vous avez publié une critique le {{post.time_created}} </h6>
         {% else %}
             <h6>{{ post.user }} a publié une critique le {{post.time_created}}</h6>
         {% endif %}

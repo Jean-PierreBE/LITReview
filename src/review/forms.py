@@ -39,6 +39,5 @@ class TicketForm(forms.ModelForm):
             "image",
         ]
 
-
 class UserFollowsForm(forms.Form):
     followed_name = forms.CharField(label="Utilisateur", widget=forms.TextInput())

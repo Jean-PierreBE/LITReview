@@ -34,3 +34,6 @@ form > p {
 inline > label {
     position:relative; left:50px;
 }
+input[type="checkbox"] {
+    width:50px;
+}

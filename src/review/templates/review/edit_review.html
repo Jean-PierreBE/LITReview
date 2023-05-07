@@ -6,9 +6,9 @@
     <div class="row">
         <div class="col-4">
             <div>{{ ticket.title }}</div>
-            {% if post.image_url %}
+            {% if ticket.image_url %}
             <div style="width: 150px">
-                <img src="{{ post.image_url|default_if_none:'#' }}" style="width: 100%">
+                <img src="{{ ticket.image_url|default_if_none:'#' }}" style="width: 100%">
             </div>
         {% endif %}
             <form method="POST">
