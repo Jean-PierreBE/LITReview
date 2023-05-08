@@ -1,3 +1,9 @@
 from django.contrib import admin # noqa : F401
+from connexion.models import ConnectUser
 
-# Register your models here.
+
+class UserAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(ConnectUser, UserAdmin)

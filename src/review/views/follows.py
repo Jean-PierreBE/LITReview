@@ -45,18 +45,16 @@ class UserFollowsView(View):
             try:
                 followed_user = ConnectUser.objects.get(pseudo=followed_name)
             except ConnectUser.DoesNotExist:
-                errors.append("Aucun user ne correspond à ce nom.")
+                errors.append("Aucun utilisateur ne correspond à ce pseudo.")
             if len(errors) == 0:
                 if self.request.user == followed_user:
                     errors.append("Un utilisateur ne peut se suivre lui-même!")
                 if UserFollows.objects.filter(user=self.request.user, followed_user=followed_user).exists():
-                    errors.append("Le couple " + str(self.request.user) + " et " +
-                                  str(followed_user) + " existe déja !!")
+                    errors.append("Vous suivez déja " + str(followed_user) + " !!")
             if not errors:
                 follow.followed_user = followed_user
                 follow.save()
-                messages.add_message(request, messages.SUCCESS, "Le couple " + str(self.request.user) + ","
-                                     + str(followed_user) + " a été créé avec succès!!")
+                messages.add_message(request, messages.SUCCESS, "Vous suivez maintenant " + str(followed_user) + " !!")
                 return redirect('abonnements')
             else:
                 for error in errors:
