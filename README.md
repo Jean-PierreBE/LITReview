@@ -11,9 +11,11 @@ Les autres fichiers sont :
 - requirements.txt contient les packages necessaires au bon fonctionnement du logiciel
 - tox.ini permet de paramétrer flake8 pour voir si le programme répond aux normes pep8
 
-## Installation
-- choisissez votre répertoire où exécuter vos programmes python
-- créer votre environnement virtuel
+## Installation de l'application
+- Cloner le dépôt de code à l'aide de la commande `https://github.com/Jean-PierreBE/LITReview.git`
+- Rendez-vous depuis un terminal à la racine du répertoire LITReview avec la commande `cd LITReview`
+- Créer un environnement virtuel pour le projet avec `$ python -m venv env` sous windows ou `$ python3 -m venv env` sous macos ou linux.
+- Activez l'environnement virtuel avec `$ env\Scripts\activate` sous windows ou `$ source env/bin/activate` sous macos ou linux.
 - installer les packages python du fichier requirements.txt en lançant la commande suivante 
   - `pip install -r requirements.txt`
 
