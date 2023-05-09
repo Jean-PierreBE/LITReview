@@ -12,7 +12,7 @@ Les autres fichiers sont :
 - tox.ini permet de paramétrer flake8 pour voir si le programme répond aux normes pep8
 
 ## Installation de l'application
-- Cloner le dépôt de code à l'aide de la commande `pip install -r requirements.txt`
+- Cloner le dépôt de code à l'aide de la commande `https://github.com/Jean-PierreBE/LITReview.git`
 - Rendez-vous depuis un terminal à la racine du répertoire LITReview avec la commande `cd LITReview`
 - Créer un environnement virtuel pour le projet avec `$ python -m venv env` sous windows ou `$ python3 -m venv env` sous macos ou linux.
 - Activez l'environnement virtuel avec `$ env\Scripts\activate` sous windows ou `$ source env/bin/activate` sous macos ou linux.
